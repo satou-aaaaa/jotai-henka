@@ -357,6 +357,10 @@ try {
     await g.evaluate(() => localStorage.setItem("jth-v1", JSON.stringify({ v: 1, tut: true, ebest: { toString: null }, dex: { y_kori: { toString: null } } })));
     await g.reload(); await g.waitForTimeout(200);
     check("記録の数の所に変な値（{toString:null}）が入っても、ホームが開く（CodeRabbit kagaku-henka#1）", errors.length === before && await g.locator("#go-d").count() === 1, errors.slice(before).join(","));
+    const before2 = errors.length;
+    await g.evaluate((k) => localStorage.setItem(k, JSON.stringify({ v: 1, tut: true, runs: { p: { mode: "p", date: "2026-11-17", list: [], res: [], cur: { wrong: [], w2: [{ toString: null }, "x"], hints: 0, step: 2 }, id: "w" } } })), "jth-v1");
+    await g.reload(); await g.waitForTimeout(200);
+    check("途中経過の2段目のまちがい（w2）に変な値（{toString:null}）が入っても、ホームが開く（CodeRabbit jotai-henka#1）", errors.length === before2 && await g.locator("#go-d").count() === 1, errors.slice(before2).join(","));
     await ctx.close();
   }
 
